@@ -1,5 +1,7 @@
 github.com/aaaton/golem v0.0.0-20190528161943-995cd80526f1 h1:c4iX3NtVxENkVuJdtal1GGO0MBH0uN3S36kmpAq948c=
 github.com/aaaton/golem v0.0.0-20190528161943-995cd80526f1/go.mod h1:+lRZffdyzy8gSKC7Rn7rT70p4atkK+21xMu6soK1OmM=
+github.com/bbalet/stopwords v1.0.0 h1:0TnGycCtY0zZi4ltKoOGRFIlZHv0WqpoIGUsObjztfo=
+github.com/bbalet/stopwords v1.0.0/go.mod h1:sAWrQoDMfqARGIn4s6dp7OW7ISrshUD8IP2q3KoqPjc=
 github.com/go-playground/locales v0.12.1/go.mod h1:IUMDtCfWo/w/mtMfIE/IG2K+Ey3ygWanZIBtBW0W2TM=
 github.com/mdanzinger/stopwords v1.0.1-0.20181107174901-1c7c18a13a5f h1:K+JdpBFCQG4Dzw54YjAdptwBFevoPfUrTUZXP5mYHaU=
 github.com/mdanzinger/stopwords v1.0.1-0.20181107174901-1c7c18a13a5f/go.mod h1:F+bTPbQPDlgYtV3VgaPFGuTF9mhehfg5wpaUj66pB3M=
