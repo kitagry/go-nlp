@@ -87,16 +87,6 @@ func (g offsetUnitGrid) Y(r int) float64 {
 	return float64(r) + g.YOffset
 }
 
-type integerTicks struct{}
-
-func (integerTicks) Ticks(min, max float64) []plot.Tick {
-	var t []plot.Tick
-	for i := math.Trunc(min); i <= max; i++ {
-		t = append(t, plot.Tick{Value: i, Label: fmt.Sprint(i)})
-	}
-	return t
-}
-
 func max(s ...float64) float64 {
 	maxContent := s[0]
 	for _, el := range s {
