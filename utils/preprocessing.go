@@ -28,6 +28,10 @@ func removeStopWords(text string) string {
 	return stopwords.CleanString(text, "en", false)
 }
 
+func lowerCase(text string) string {
+	return strings.ToLower(text)
+}
+
 func tokenizeText(text string) []string {
 	return strings.Split(text, " ")
 }
@@ -39,8 +43,9 @@ func lemmatizeWord(word string) string {
 // Prerocessing for text.
 // 1. Remove special charactor.
 // 2. Remove stop words.
-// 3. Split texts.
-// 4. Lemmatize words.
+// 3. To lower
+// 4. Split texts.
+// 5. Lemmatize words.
 func Preprocessing(text string) []string {
 	text = cleaningText(text)
 	text = removeStopWords(text)
@@ -50,6 +55,7 @@ func Preprocessing(text string) []string {
 	if text[len(text)-1] == ' ' {
 		text = text[0 : len(text)-1]
 	}
+	text = lowerCase(text)
 	texts := tokenizeText(text)
 	for i := 0; i < len(texts); i++ {
 		texts[i] = lemmatizeWord(texts[i])

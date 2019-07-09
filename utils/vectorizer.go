@@ -1,6 +1,8 @@
 package utils
 
-import "math"
+import (
+	"math"
+)
 
 type Vectorizer interface {
 	Vectorize(docs [][]string) [][]float64
@@ -44,10 +46,14 @@ func (bv bowVectorizer) Vectorize(docs [][]string) [][]float64 {
 	return results
 }
 
-type tfidfVectorizer struct{}
+type tfidfVectorizer struct {
+	minIdf float64
+}
 
-func NewTfidfVectorizer() Vectorizer {
-	return tfidfVectorizer{}
+func NewTfidfVectorizer(minIdf float64) Vectorizer {
+	return tfidfVectorizer{
+		minIdf: minIdf,
+	}
 }
 
 func countWords(doc []string) map[string]int {
@@ -105,10 +111,23 @@ func (tv tfidfVectorizer) Vectorize(docs [][]string) [][]float64 {
 
 	tfidfVec := make([][]float64, len(docs))
 	idfVec := idf(word2id, docs)
+
+	filteredIdf := make([]float64, 0)
+	for i := 0; i < len(idfVec); i++ {
+		if idfVec[i] > tv.minIdf {
+			filteredIdf = append(filteredIdf, idfVec[i])
+		}
+	}
+
 	for i := 0; i < len(docs); i++ {
-		res := tf(word2id, docs[i])
-		for j := 0; j < len(res); j++ {
-			res[j] *= idfVec[j]
+		tfs := tf(word2id, docs[i])
+		res := make([]float64, len(filteredIdf))
+		current := 0
+		for j := 0; j < len(tfs); j++ {
+			if idfVec[j] > tv.minIdf {
+				res[current] = tfs[j] * idfVec[j]
+				current++
+			}
 		}
 		tfidfVec[i] = res
 	}
