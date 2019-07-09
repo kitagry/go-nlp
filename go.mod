@@ -1,4 +1,4 @@
-module github.com/kitagry/nlp
+module github.com/kitagry/go-nlp
 
 go 1.12
 
