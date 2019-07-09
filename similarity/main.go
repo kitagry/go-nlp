@@ -15,8 +15,6 @@ import (
 	"gonum.org/v1/plot/vg/draw"
 	"gonum.org/v1/plot/vg/vgimg"
 
-	"github.com/aaaton/golem"
-	"github.com/aaaton/golem/dicts/en"
 	"github.com/kitagry/go-nlp/utils"
 )
 
@@ -184,12 +182,6 @@ func saveImage(imageName string, labels []string, data []float64) {
 }
 
 func main() {
-	var err error
-	lemmatizer, err = golem.New(en.New())
-	if err != nil {
-		panic(err)
-	}
-
 	f, err := os.Open("nlp_country.csv")
 	if err != nil {
 		fmt.Println("ファイル読み込みエラー")
@@ -211,7 +203,7 @@ func main() {
 
 	docs := make([][]string, len(documents))
 	for index, doc := range documents {
-		docs[index] = Preprocessing(doc)
+		docs[index] = utils.Preprocessing(doc)
 	}
 
 	bowVectorizer := utils.NewBowVectorizer()
@@ -225,28 +217,28 @@ func main() {
 	tfidfCosineData := make([]float64, 16*16)
 	for i := 1; i < len(docs); i++ {
 		for j := 1; j < len(docs); j++ {
-			d, err := euclideanDistance(bowVec[i], bowVec[j])
+			d, err := utils.EuclideanDistance(bowVec[i], bowVec[j])
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 			bowEuclidData[(i-1)*16+j-1] = d
 
-			d, err = cosineDistance(bowVec[i], bowVec[j])
+			d, err = utils.CosineDistance(bowVec[i], bowVec[j])
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 			bowCosineData[(i-1)*16+j-1] = d
 
-			d, err = euclideanDistance(tfidfVec[i], tfidfVec[j])
+			d, err = utils.EuclideanDistance(tfidfVec[i], tfidfVec[j])
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 			tfidfEuclidData[(i-1)*16+j-1] = d
 
-			d, err = cosineDistance(tfidfVec[i], tfidfVec[j])
+			d, err = utils.CosineDistance(tfidfVec[i], tfidfVec[j])
 			if err != nil {
 				fmt.Println(err)
 				return

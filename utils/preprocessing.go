@@ -5,8 +5,19 @@ import (
 	"strings"
 
 	"github.com/aaaton/golem"
+	"github.com/aaaton/golem/dicts/en"
 	"github.com/mdanzinger/stopwords"
 )
+
+var lemmatizer *golem.Lemmatizer
+
+func init() {
+	var err error
+	lemmatizer, err = golem.New(en.New())
+	if err != nil {
+		panic(err)
+	}
+}
 
 func cleaningText(text string) string {
 	re := regexp.MustCompile("(@|<.+?>|\\(.*\\))")
@@ -20,8 +31,6 @@ func removeStopWords(text string) string {
 func tokenizeText(text string) []string {
 	return strings.Split(text, " ")
 }
-
-var lemmatizer *golem.Lemmatizer
 
 func lemmatizeWord(word string) string {
 	return lemmatizer.Lemma(word)
