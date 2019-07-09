@@ -11,6 +11,7 @@ github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF0
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/jung-kurt/gofpdf v1.0.3-0.20190309125859-24315acbbda5 h1:PJr+ZMXIecYc1Ey2zucXdR73SMBtgjPgwa31099IMv0=
 github.com/jung-kurt/gofpdf v1.0.3-0.20190309125859-24315acbbda5/go.mod h1:7Id9E/uU8ce6rXgefFLlgrJj/GYY22cpxn+r32jIOes=
+github.com/kitagry/go-nlp v0.0.0-20190704031433-f6c275b216eb h1:MUZEau6HwiY4mDMczKv3wEIPZDEikr9qZMw4lxZEkGA=
 github.com/mdanzinger/stopwords v1.0.1-0.20181107174901-1c7c18a13a5f h1:K+JdpBFCQG4Dzw54YjAdptwBFevoPfUrTUZXP5mYHaU=
 github.com/mdanzinger/stopwords v1.0.1-0.20181107174901-1c7c18a13a5f/go.mod h1:F+bTPbQPDlgYtV3VgaPFGuTF9mhehfg5wpaUj66pB3M=
 golang.org/x/exp v0.0.0-20180321215751-8460e604b9de/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=

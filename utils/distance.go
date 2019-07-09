@@ -1,11 +1,11 @@
-package main
+package utils
 
 import (
 	"errors"
 	"math"
 )
 
-func euclideanDistance(a, b []float64) (float64, error) {
+func EuclideanDistance(a, b []float64) (float64, error) {
 	if len(a) != len(b) {
 		return 0, errors.New("配列の長さは同じにしてください")
 	}
@@ -36,7 +36,7 @@ func norm(a []float64) float64 {
 	return math.Sqrt(result)
 }
 
-func cosineDistance(a, b []float64) (float64, error) {
+func CosineDistance(a, b []float64) (float64, error) {
 	if len(a) != len(b) {
 		return 0, errors.New("配列の長さは同じにしてください")
 	}

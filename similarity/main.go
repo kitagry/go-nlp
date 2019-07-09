@@ -17,6 +17,7 @@ import (
 
 	"github.com/aaaton/golem"
 	"github.com/aaaton/golem/dicts/en"
+	"github.com/kitagry/go-nlp/utils"
 )
 
 func write(docs [][]string, countries []string, bowVec, tfidfVec [][]float64) error {
@@ -34,25 +35,25 @@ func write(docs [][]string, countries []string, bowVec, tfidfVec [][]float64) er
 		result := make([]string, 5)
 		result[0] = countries[i]
 
-		dist, err := euclideanDistance(bowVec[1], bowVec[i])
+		dist, err := utils.EuclideanDistance(bowVec[1], bowVec[i])
 		if err != nil {
 			return err
 		}
 		result[1] = fmt.Sprint(dist)
 
-		dist, err = cosineDistance(bowVec[1], bowVec[i])
+		dist, err = utils.CosineDistance(bowVec[1], bowVec[i])
 		if err != nil {
 			return err
 		}
 		result[2] = fmt.Sprint(dist)
 
-		dist, err = euclideanDistance(tfidfVec[1], tfidfVec[i])
+		dist, err = utils.EuclideanDistance(tfidfVec[1], tfidfVec[i])
 		if err != nil {
 			return err
 		}
 		result[3] = fmt.Sprint(dist)
 
-		dist, err = cosineDistance(tfidfVec[1], tfidfVec[i])
+		dist, err = utils.CosineDistance(tfidfVec[1], tfidfVec[i])
 		if err != nil {
 			return err
 		}
@@ -213,9 +214,9 @@ func main() {
 		docs[index] = Preprocessing(doc)
 	}
 
-	bowVectorizer := NewBowVectorizer()
+	bowVectorizer := utils.NewBowVectorizer()
 	bowVec := bowVectorizer.Vectorize(docs)
-	tfidfVectorizer := NewTfidfVectorizer()
+	tfidfVectorizer := utils.NewTfidfVectorizer()
 	tfidfVec := tfidfVectorizer.Vectorize(docs)
 
 	bowEuclidData := make([]float64, 16*16)
