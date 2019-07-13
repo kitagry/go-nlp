@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/kitagry/go-nlp/utils"
@@ -19,7 +20,10 @@ func kMeans(vecs [][]float64, knum, nSample int) (result []int) {
 		result[i] = rand.Intn(knum)
 	}
 
+	writer := bufio.NewWriter(os.Stdout)
 	for sample := 0; sample < nSample; sample++ {
+		writer.WriteString(fmt.Sprintf("\r%d/%d", sample+1, nSample))
+		writer.Flush()
 		// 重心を求める
 		centers := make([][]float64, knum)
 		for i := 0; i < knum; i++ {
@@ -51,46 +55,30 @@ func kMeans(vecs [][]float64, knum, nSample int) (result []int) {
 			result[i] = minIndex
 		}
 	}
+	writer.WriteString("\n")
+	writer.Flush()
 
 	return
 }
 
 func main() {
-	f, err := os.Open("./enwiki-20150112-400-r10-105752.txt")
+	f, err := os.Open("./movie.txt")
 	if err != nil {
 		panic(err)
 	}
-	DOCNUM := 500
 
 	sc := bufio.NewScanner(f)
-	titles := make([]string, DOCNUM)
-	docs := make([]string, DOCNUM)
-	isTitle := true
-	i := 0
+	titles := make([]string, 0)
+	docs := make([]string, 0)
 	for sc.Scan() {
 		t := sc.Text()
 
-		if isTitle {
-			if t == "" {
-				isTitle = false
-				continue
-			}
-			titles[i] = t
-		} else {
-			if t == "" {
-				sc.Scan()
-				sc.Text()
-				isTitle = true
-				i++
-				if i == DOCNUM {
-					break
-				}
-				continue
-			}
-			docs[i] += t
-		}
+		texts := strings.SplitN(t, ",", 2)
+		titles = append(titles, texts[0])
+		docs = append(docs, texts[1])
 	}
 
+	fmt.Println("Preprocess documents.")
 	preprocessedDocs := make([][]string, len(docs))
 	for i := 0; i < len(docs); i++ {
 		preprocessedDocs[i] = utils.Preprocessing(docs[i])
@@ -99,5 +87,20 @@ func main() {
 	tfidfVectorizer := utils.NewTfidfVectorizer(0.1)
 	vecs := tfidfVectorizer.Vectorize(preprocessedDocs)
 
-	fmt.Println(kMeans(vecs, 10, 10))
+	fmt.Println("KMeans")
+	groupNum := 3
+	groupIds := kMeans(vecs, groupNum, 100)
+	groups := make(map[int][]string)
+
+	for index, group := range groupIds {
+		if _, ok := groups[group]; !ok {
+			groups[group] = make([]string, 0)
+		}
+
+		groups[group] = append(groups[group], titles[index])
+	}
+
+	for _, group := range groups {
+		fmt.Println(group)
+	}
 }
