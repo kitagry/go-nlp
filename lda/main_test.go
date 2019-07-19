@@ -8,7 +8,6 @@ import (
 
 func TestLDA(t *testing.T) {
 	lda := NewLDA(10, 0.1, 0.1)
-
 	docs := []string{
 		"I like to eat broccoli and bananas.",
 		"I ate a banana and spinach smoothie for breakfast.",
@@ -24,7 +23,8 @@ func TestLDA(t *testing.T) {
 		preprocessdDocs[i] = utils.Preprocessing(docs[i])
 	}
 	vecs := word2IdVectorizer.Vectorize(preprocessdDocs)
-	lda.SetDocs(vecs, word2IdVectorizer.WordNum())
+	lda.SetDocs(vecs, word2IdVectorizer.Id2Word())
 
 	lda.Inference()
+	outputWordTopicDist(lda)
 }

@@ -11,6 +11,7 @@ type Vectorizer interface {
 type UniqVectorizer interface {
 	Vectorizer
 	WordNum() int
+	Id2Word() []string
 }
 
 var _ Vectorizer = (*bowVectorizer)(nil)
@@ -167,4 +168,12 @@ func (w *word2IdVectorizer) Vectorize(docs [][]string) [][]float64 {
 
 func (w *word2IdVectorizer) WordNum() int {
 	return len(w.word2id)
+}
+
+func (w *word2IdVectorizer) Id2Word() []string {
+	result := make([]string, len(w.word2id))
+	for word, id := range w.word2id {
+		result[id] = word
+	}
+	return result
 }
