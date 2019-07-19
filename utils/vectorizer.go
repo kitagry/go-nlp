@@ -8,6 +8,15 @@ type Vectorizer interface {
 	Vectorize(docs [][]string) [][]float64
 }
 
+type UniqVectorizer interface {
+	Vectorizer
+	WordNum() int
+}
+
+var _ Vectorizer = (*bowVectorizer)(nil)
+var _ Vectorizer = (*tfidfVectorizer)(nil)
+var _ UniqVectorizer = (*word2IdVectorizer)(nil)
+
 func makeWord2Id(docs [][]string) map[string]int {
 	word2id := make(map[string]int)
 	count := 0
@@ -132,4 +141,30 @@ func (tv tfidfVectorizer) Vectorize(docs [][]string) [][]float64 {
 		tfidfVec[i] = res
 	}
 	return tfidfVec
+}
+
+type word2IdVectorizer struct {
+	word2id map[string]int
+}
+
+func NewWord2IdVectorizer() UniqVectorizer {
+	return &word2IdVectorizer{}
+}
+
+func (w *word2IdVectorizer) Vectorize(docs [][]string) [][]float64 {
+	word2id := makeWord2Id(docs)
+	w.word2id = word2id
+	result := make([][]float64, len(docs))
+	for i, ds := range docs {
+		r := make([]float64, len(ds))
+		for j, d := range ds {
+			r[j] = float64(word2id[d])
+		}
+		result[i] = r
+	}
+	return result
+}
+
+func (w *word2IdVectorizer) WordNum() int {
+	return len(w.word2id)
 }
