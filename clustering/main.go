@@ -88,7 +88,7 @@ func main() {
 	vecs := tfidfVectorizer.Vectorize(preprocessedDocs)
 
 	fmt.Println("KMeans")
-	groupNum := 3
+	groupNum := 2
 	groupIds := kMeans(vecs, groupNum, 100)
 	groups := make(map[int][]string)
 
