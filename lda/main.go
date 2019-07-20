@@ -151,20 +151,25 @@ func outputWordTopicDist(lda LDA) {
 			}
 		}
 	}
+	fmt.Println("| トピック | ワード1 | ワード2 | ワード3 |")
+	fmt.Println("|:----:|:----:|:----:|:----:|")
 
 	phi := lda.Worddist()
 	for k := 0; k < lda.TopicNum; k++ {
-		fmt.Printf("\ntopic %d (%d words)\n", k, zcount[k])
+		// fmt.Printf("\ntopic %d (%d words)\n", k, zcount[k])
+		fmt.Printf("| topic %d", k)
 		row := phi.RawRowView(k)
 		row = reversePosiNega(row)
 		args := argsort(row)
-		if len(args) > 5 {
-			args = args[:5]
+		if len(args) > 3 {
+			args = args[:3]
 		}
 		for _, w := range args {
-			word, _ := wordCount[k][w]
-			fmt.Printf("%s: %f (%d)\n", lda.id2Word[w], phi.At(k, w), word)
+			// word, _ := wordCount[k][w]
+			// fmt.Printf("%s: %f (%d)\n", lda.id2Word[w], phi.At(k, w), word)
+			fmt.Printf(" | %s(%.4f)", lda.id2Word[w], phi.At(k, w))
 		}
+		fmt.Printf(" |\n")
 	}
 }
 
@@ -218,7 +223,7 @@ func main() {
 	fmt.Println("Preprocess documents.")
 	preprocessedDocs := make([][]string, len(docs))
 	for i := 0; i < len(docs); i++ {
-		preprocessedDocs[i] = utils.Preprocessing(docs[i])
+		preprocessedDocs[i] = utils.Preprocessing(docs[i], []string{"film", "best", "award", "release", "direct", "write", "million", "star", "academy", "american", "win", "receive", "unite", "state", "th", "s"})
 	}
 
 	word2Vectorizer := utils.NewWord2IdVectorizer()

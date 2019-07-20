@@ -40,13 +40,23 @@ func lemmatizeWord(word string) string {
 	return lemmatizer.Lemma(word)
 }
 
+func exceptWords(words, exceptWords []string) []string {
+	result := make([]string, 0)
+	for _, word := range words {
+		if !in(word, exceptWords) {
+			result = append(result, word)
+		}
+	}
+	return result
+}
+
 // Prerocessing for text.
 // 1. Remove special charactor.
 // 2. Remove stop words.
 // 3. To lower
 // 4. Split texts.
 // 5. Lemmatize words.
-func Preprocessing(text string) []string {
+func Preprocessing(text string, exceptWord []string) []string {
 	text = cleaningText(text)
 	text = removeStopWords(text)
 	if text[0] == ' ' {
@@ -60,5 +70,6 @@ func Preprocessing(text string) []string {
 	for i := 0; i < len(texts); i++ {
 		texts[i] = lemmatizeWord(texts[i])
 	}
+	texts = exceptWords(texts, exceptWord)
 	return texts
 }
