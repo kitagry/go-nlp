@@ -158,8 +158,8 @@ func outputWordTopicDist(lda LDA) {
 		row := phi.RawRowView(k)
 		row = reversePosiNega(row)
 		args := argsort(row)
-		if len(args) > 10 {
-			args = args[:10]
+		if len(args) > 5 {
+			args = args[:5]
 		}
 		for _, w := range args {
 			word, _ := wordCount[k][w]
@@ -191,10 +191,11 @@ func argsort(ar []float64) []int {
 }
 
 func reversePosiNega(ar []float64) []float64 {
+	result := make([]float64, len(ar))
 	for i := 0; i < len(ar); i++ {
-		ar[i] = ar[i] * -1
+		result[i] = ar[i] * -1
 	}
-	return ar
+	return result
 }
 
 func main() {
@@ -223,11 +224,11 @@ func main() {
 	word2Vectorizer := utils.NewWord2IdVectorizer()
 	vecs := word2Vectorizer.Vectorize(preprocessedDocs)
 	id2Word := word2Vectorizer.Id2Word()
-	topicNum := 10
+	topicNum := 12
 	lda := NewLDA(topicNum, 0.5, 0.5)
 	lda.SetDocs(vecs, id2Word)
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 200; i++ {
 		lda.Inference()
 	}
 
@@ -244,8 +245,12 @@ func main() {
 	}
 
 	for i, titles := range groupedTitles {
-		fmt.Printf("topic %d:\n", i)
-		fmt.Printf("%v\n\n", titles)
+		fmt.Printf("\ntopic %d:\n", i)
+		fmt.Print("[")
+		for _, title := range titles {
+			fmt.Printf(" %s,", title)
+		}
+		fmt.Print("]\n")
 	}
 }
 
